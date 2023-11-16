@@ -3,11 +3,11 @@ package com.odk3.vetcare.exceptions;
 import java.time.LocalDateTime;
 
 public class ErrorFormat {
-    private String timestamp;
-    private int status;
-    private String error;
-    private String message;
-    private String path;
+    private final String timestamp;
+    private final int status;
+    private final String error;
+    private final String message;
+    private final String path;
 
     public ErrorFormat(LocalDateTime timestamp, int status, String error, String message, String path) {
         this.timestamp = timestamp.toString();

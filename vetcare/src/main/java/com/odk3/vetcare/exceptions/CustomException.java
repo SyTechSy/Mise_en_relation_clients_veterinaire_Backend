@@ -89,7 +89,7 @@ public class CustomException {
     }
 
 
-    @ExceptionHandler(ResourceAlreadyExist.class)
+    /*@ExceptionHandler(ResourceAlreadyExist.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<Object> resourceAlreadyExist(ResourceAlreadyExist ex, WebRequest request) {
         // Créer le corps de la réponse avec le format souhaité
@@ -102,7 +102,7 @@ public class CustomException {
         );
 
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-    }
+    }*/
 
 
     @ExceptionHandler(BadRequest.class)

@@ -1,9 +1,9 @@
 package com.odk3.vetcare.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
@@ -13,5 +13,49 @@ public class Utilisateur {
     // Id principale de votre Id User
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    // Not nul de base de donnée
+    @Column(nullable = false)
+    private Long utilisateurId;
+
+
+    //=========================== POUR NOM ===========================
+
+    // Not nul de Spring boot
+    @NotNull(message = "bien")
+
+    @Size(min = 2, message = "champs trop courte")
+
+    // Not null de basse de donnée
+    @Column(nullable = false)
+    private String nom;
+
+    //=========================== POUR PRENOM ===========================
+    @NotNull(message = "Champs vide")
+    @Size(min = 2,message = "veuillez saisir un noms correcte")
+    // Not Null de base donnée
+    @Column(nullable = false)
+    private String prenom;
+
+    //========================== POUR EMAIL ============================
+    @NotNull(message = "Champs vide")
+
+    @Email(message = "email incorrect")
+    // Not Null de base de donnée
+    @Column(nullable = false)
+    private String email;
+
+
+    //======================= POUR MOT DE PASSE ===============================
+
+    // Not Null de Spring
+    @NotNull(message = "Champs vide")
+
+    // size : lenght de notre Mot de passe
+    // message : message afficher si le champs de notre Mot de passe est vide
+    @Size(min = 6, message = "Saisissez un Mot de pass correct")
+
+    // Not Null de base de donnée
+    @Column(nullable = false)
+    private String motDePasse;
 }
