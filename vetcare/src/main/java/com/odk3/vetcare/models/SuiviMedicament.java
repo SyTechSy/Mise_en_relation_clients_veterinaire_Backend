@@ -33,7 +33,7 @@ public class SuiviMedicament {
     @NotNull(message = "date de fin")
     // Not null de basse de donnée
     @Column(nullable = false)
-    private LocalDate finDebut;
+    private LocalDate dateFin;
 
     //=========================== POUR NOM MEDICAL ===========================
 
@@ -91,12 +91,12 @@ public class SuiviMedicament {
     //=========================== POUR DESCRIPTION ===========================
 
     // Not nul de Spring boot
-    @NotNull(message = " description")
+    @NotNull(message = " description non renter correct")
 
     @Size(min = 2, message = "champs trop courte")
 
     // Not null de basse de donnée
     @Column(nullable = false)
-    private String descrition;
+    private String description;
 
 }

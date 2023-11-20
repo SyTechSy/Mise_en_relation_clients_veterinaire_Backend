@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8100")
 @RestController
 @RequestMapping("api/suiviMedicament")
 public class SuiviMedicamentController {
@@ -84,6 +85,14 @@ public class SuiviMedicamentController {
         } else {
             return new ResponseEntity<>("existe pas", HttpStatus.NOT_FOUND);
         }
+    }
+
+
+    ////////////////////////// SUIvi id
+
+    @GetMapping("/suivi/{id}")
+    public ResponseEntity<Object> modifierParId(@PathVariable long id) {
+        return new ResponseEntity<>(suiviMedicamentService.suiviMedicamentById(id), HttpStatus.OK);
     }
 
 

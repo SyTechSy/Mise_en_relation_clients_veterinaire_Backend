@@ -22,10 +22,16 @@ public class UtilisateurService {
         if (utilisateurRepository.findByEmail(utilisateur.getEmail()) == null) {
             return utilisateurRepository.save(utilisateur);
         } else {
-            throw new DuplicateException("Cet email existe déjà");
+            throw new NoContentException("Cet email existe déjà");
         }
     }
 
+    public Utilisateur userId(Utilisateur utilisateur) {
+        if (utilisateurRepository.findByUtilisateurId(utilisateur.getUtilisateurId()) != null) {
+            return utilisateurRepository.findByUtilisateurId(utilisateur.getUtilisateurId());
+        } else
+            throw new RuntimeException("user");
+    }
 
 
     /////////////////////////////// Pour La connexion  de utilisateur
@@ -50,8 +56,7 @@ public class UtilisateurService {
 
     public Utilisateur modifierUtilisateur(Utilisateur utilisateur) {
         if (utilisateurRepository.findByUtilisateurId(utilisateur.getUtilisateurId()) != null) {
-            utilisateurRepository.save(utilisateur);
-            return utilisateurRepository.findByUtilisateurId(utilisateur.getUtilisateurId());
+            return utilisateurRepository.save(utilisateur);
         } else {
             return null;
         }

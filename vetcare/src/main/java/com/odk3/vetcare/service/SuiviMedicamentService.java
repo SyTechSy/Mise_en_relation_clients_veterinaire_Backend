@@ -25,6 +25,15 @@ public class SuiviMedicamentService {
             throw new DuplicateException("Cet medicament existe déjà");
     }
 
+    ///////////////////////
+
+    public SuiviMedicament suiviMedicamentById(long idSuivi) {
+        if (suiviMedicamentRepository.findBySuiviMedicamentId(idSuivi) != null)
+            return suiviMedicamentRepository.findBySuiviMedicamentId(idSuivi);
+        else
+            throw new NoContentException("suivi invalid");
+    }
+
     /////////////////////////////// Pour voir les list des medicament
 
     public List<SuiviMedicament> listUtilisateu() {

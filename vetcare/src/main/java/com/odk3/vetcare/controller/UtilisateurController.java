@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8100")
 @RestController
 @RequestMapping("api/utilisateur")
 public class UtilisateurController {
@@ -46,6 +47,18 @@ public class UtilisateurController {
     }
 
 
+    @GetMapping("UtilisateurId")
+    public ResponseEntity<Utilisateur> idUser(@Valid @RequestBody Utilisateur utilisateur) {
+        Utilisateur verifUser = utilisateurService.userId(utilisateur);
+        if (verifUser != null) {
+            return new ResponseEntity<>(verifUser, HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+    }
+
+
 
     ////////////////////////////// Pour La connexion des Vétérinaire
 
@@ -58,7 +71,7 @@ public class UtilisateurController {
             @ApiResponse(responseCode = "409",description = "Utilisateur exist déjà", content = @Content),
             @ApiResponse(responseCode = "500",description = "Erreur server", content = @Content)
     })
-    @PostMapping("/connexion")
+    @GetMapping("/connexion")
     public Utilisateur connexion(@Parameter(description = "email de l'Utilisateur") @RequestParam("email") String email,
                                  @Parameter(description = "Mot de passe de l'Utilisateur") @RequestParam("mot_de_passe") String mot_de_passe) {
         return utilisateurService.connexionUtilisateur(email, mot_de_passe);
@@ -96,12 +109,12 @@ public class UtilisateurController {
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
     @PutMapping("/modifier")
-    public ResponseEntity<Object> modifierUtilisateur(@RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<Object> modifierUtilisateur(@Valid @RequestBody Utilisateur utilisateur) {
         Utilisateur verifUtilisateur = utilisateurService.modifierUtilisateur(utilisateur);
         if (verifUtilisateur != null) {
             return new ResponseEntity<>(verifUtilisateur, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("existe pas", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("on peut pas modifier quelque chose qui n'existe pas", HttpStatus.NOT_FOUND);
         }
     }
 

@@ -24,7 +24,7 @@ public class Utilisateur {
     // Not nul de Spring boot
     @NotNull(message = "bien")
 
-    @Size(min = 2, message = "champs trop courte")
+    @Size(min = 2, message = "champs NOM trop courte")
 
     // Not null de basse de donnée
     @Column(nullable = false)
@@ -32,18 +32,45 @@ public class Utilisateur {
 
     //=========================== POUR PRENOM ===========================
     @NotNull(message = "Champs vide")
-    @Size(min = 2,message = "veuillez saisir un noms correcte")
+    @Size(min = 2,message = "veuillez saisir un prenom correcte")
     // Not Null de base donnée
     @Column(nullable = false)
     private String prenom;
 
-    //========================== POUR EMAIL ============================
+    //=========================== POUR PRENOM ===========================
     @NotNull(message = "Champs vide")
-
-    @Email(message = "email incorrect")
-    // Not Null de base de donnée
+    @Size(min = 2,message = "veuillez saisir un numero correcte")
+    // Not Null de base donnée
     @Column(nullable = false)
-    private String email;
+    private String numero;
+
+    //=========================== POUR PRENOM ===========================
+    @NotNull(message = "Champs vide")
+    @Size(min = 2,message = "veuillez saisir un genre correcte")
+    // Not Null de base donnée
+    @Column(nullable = false)
+    private String genre;
+
+    //=========================== POUR PRENOM ===========================
+    @NotNull(message = "Champs vide")
+    @Size(min = 2,message = "veuillez saisir un dateNaissance correcte")
+    // Not Null de base donnée
+    @Column(nullable = false)
+    private String dateNaissance;
+
+    //=========================== POUR PRENOM ===========================
+    @NotNull(message = "Champs vide")
+    @Size(min = 2,message = "veuillez saisir un quartier correcte")
+    // Not Null de base donnée
+    @Column(nullable = false)
+    private String quartier;
+
+    //=========================== POUR PRENOM ===========================
+    @NotNull(message = "Champs vide")
+    @Size(min = 2,message = "veuillez saisir un description correcte")
+    // Not Null de base donnée
+    @Column(nullable = false)
+    private String description;
 
 
     //======================= POUR MOT DE PASSE ===============================
@@ -58,4 +85,13 @@ public class Utilisateur {
     // Not Null de base de donnée
     @Column(nullable = false)
     private String motDePasse;
+
+    //========================== POUR EMAIL ============================
+    @NotNull(message = "Champs vide")
+
+    @Email(message = "email incorrect")
+    // Not Null de base de donnée
+    @Column(nullable = false)
+    private String email;
+
 }
