@@ -1,5 +1,9 @@
 package com.odk3.vetcare.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.odk3.vetcare.models.SuiviMedicament;
 import com.odk3.vetcare.models.Utilisateur;
 import com.odk3.vetcare.models.Veterinaire;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,7 +41,7 @@ public class SuiviMedicamentController {
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
     @RequestMapping("/ajouter")
-    public ResponseEntity<Object> ajouterMedicament(@Valid @RequestBody SuiviMedicament suiviMedicament) {
+    /*public ResponseEntity<Object> ajouterMedicament(@Valid @RequestBody SuiviMedicament suiviMedicament) {
         SuiviMedicament verifMedicament = suiviMedicamentService.ajouterMedicament(suiviMedicament);
 
         if (verifMedicament != null) {
@@ -44,6 +49,23 @@ public class SuiviMedicamentController {
         } else {
             return new ResponseEntity<>("existe", HttpStatus.NOT_FOUND);
         }
+    }*/
+    public ResponseEntity<Object> ajouterMedicamentMedi(
+            @Valid @RequestParam("suiviMedicament") String suiviMedicamentString,
+            @RequestParam(value = "image", required = false)MultipartFile imageFile
+            ) throws  Exception {
+
+        SuiviMedicament suiviMedicament;
+        try {
+            JsonMapper jsonMapper = new JsonMapper();
+            jsonMapper.registerModule(new JavaTimeModule());
+            suiviMedicament = jsonMapper.readValue(suiviMedicamentString, SuiviMedicament.class);
+        } catch (JsonProcessingException e ) {
+            throw new Exception(e.getMessage());
+        }
+
+        SuiviMedicament savedSuiviMedicament = suiviMedicamentService.ajouterMedicamentAvecImage(suiviMedicament, imageFile);
+        return new ResponseEntity<>(savedSuiviMedicament, HttpStatus.CREATED);
     }
 
 

@@ -103,9 +103,22 @@ public class Veterinaire {
 
     //========================= POUR LE IMAGE =============================
 
+    /*@NotNull(message = "Champs vide")
+    @Column(nullable = false)
+    private String dateNaissance;*/
+
     @NotNull(message = "Champs vide")
     @Column(nullable = false)
-    private String dataNaissance;
+    private String jours;
+
+    @NotNull(message = "Champs vide")
+    @Column(nullable = false)
+    private String mois;
+
+    @NotNull(message = "Champs vide")
+    @Column(nullable = false)
+    private String annee;
+
 
     //========================= POUR LE ANNEE D'EXPERIENCE  =============================
 

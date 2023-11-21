@@ -35,6 +35,14 @@ public class SuiviMedicament {
     @Column(nullable = false)
     private LocalDate dateFin;
 
+
+    //========================= POUR LE IMAGE =============================
+
+
+    @NotNull(message = "Champs vide")
+    @Column(nullable = false)
+    private String photo;
+
     //=========================== POUR NOM MEDICAL ===========================
 
     // Not nul de Spring boot

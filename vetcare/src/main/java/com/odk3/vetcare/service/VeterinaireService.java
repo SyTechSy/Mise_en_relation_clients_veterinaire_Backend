@@ -40,7 +40,7 @@ public class VeterinaireService {
 
             // Traitement du fichier image
             if (imageFile != null ) {
-                String imageLocation = "C:\\xamps\\\\htdocs\\vetCareFile\\images";
+                String imageLocation = "C:\\xampp\\\\htdocs\\vetCareFile\\images";
                 try {
                     Path imageRootLocation = Paths.get(imageLocation);
                     if (!Files.exists(imageRootLocation)) {

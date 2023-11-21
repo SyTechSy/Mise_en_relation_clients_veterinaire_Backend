@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8100")
 @RestController
 @RequestMapping("/api/veterinaire")
 public class VeterinaireController {
@@ -65,7 +66,7 @@ public class VeterinaireController {
             @ApiResponse(responseCode = "409",description = "Veteriniare exist déjà", content = @Content),
             @ApiResponse(responseCode = "500",description = "Erreur server", content = @Content)
     })
-    @PostMapping("/connexion")
+    @GetMapping("/connexion")
     public Veterinaire connexion(@Parameter(description = "email de vétérinaire") @RequestParam("email") String email,
                                  @Parameter(description = "Mot de passe de vétériniare") @RequestParam("mot_de_passe") String mot_de_passe) {
         return veterinaireService.connexionVeterinaire(email, mot_de_passe);
