@@ -99,15 +99,29 @@ public class SuiviMedicamentController {
             @ApiResponse(responseCode = "404", description = "introuvable", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
-    @PutMapping("/modifier")
-    public ResponseEntity<Object> modifierMedicament(@RequestBody SuiviMedicament suiviMedicament) {
-        SuiviMedicament verifMedicament = suiviMedicamentService.modifierMedicament(suiviMedicament);
-        if (verifMedicament != null) {
-            return new ResponseEntity<>(verifMedicament, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("existe pas", HttpStatus.NOT_FOUND);
+
+    @PutMapping(value = "/modifier", consumes = {"*/*"})
+    public ResponseEntity<SuiviMedicament> modifierMedicamentAvecImage(
+            @Valid @RequestParam("suiviMedicament") String suiviMedicamentString,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) throws Exception {
+        SuiviMedicament suiviMedicamentMiseAJour;
+        try {
+            JsonMapper jsonMapper = new JsonMapper();
+            jsonMapper.registerModule(new JavaTimeModule());
+            suiviMedicamentMiseAJour = jsonMapper.readValue(suiviMedicamentString, SuiviMedicament.class);
+            //suiviMedicamentMiseAJour = new JsonMapper().readValue(suiviMedicamentString, SuiviMedicament.class);
+        } catch (JsonProcessingException e) {
+            throw new Exception(e.getMessage());
+        }
+        try {
+            SuiviMedicament suiviMedicamentMiseAJourner = suiviMedicamentService.modifierMedicamentAvecImage(suiviMedicamentMiseAJour, imageFile);
+            return new ResponseEntity<>(suiviMedicamentMiseAJourner, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 
     ////////////////////////// SUIvi id
@@ -139,3 +153,15 @@ public class SuiviMedicamentController {
     }
 
 }
+
+
+
+    /*@PutMapping("/modifier")
+    public ResponseEntity<Object> modifierMedicament(@RequestBody SuiviMedicament suiviMedicament) {
+        SuiviMedicament verifMedicament = suiviMedicamentService.modifierMedicament(suiviMedicament);
+        if (verifMedicament != null) {
+            return new ResponseEntity<>(verifMedicament, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("existe pas", HttpStatus.NOT_FOUND);
+        }
+    }*/

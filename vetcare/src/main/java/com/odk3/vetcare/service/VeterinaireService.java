@@ -89,7 +89,7 @@ public class VeterinaireService {
         }
         if (imageFile != null) {
             try {
-                String emplacementImage = "C:\\xamps\\\\htdocs\\vetCareFile\\images";
+                String emplacementImage = "C:\\xampp\\\\htdocs\\vetCareFile\\images";
                 String nomImage = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
                 Path cheminImage = Paths.get(emplacementImage).resolve(nomImage);
 

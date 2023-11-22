@@ -58,6 +58,14 @@ public class Utilisateur {
     @Column(nullable = false)
     private String dateNaissance;
 
+
+    //========================= POUR LE IMAGE =============================
+
+
+    @NotNull(message = "Champs vide")
+    @Column(nullable = false)
+    private String photo;
+
     //=========================== POUR PRENOM ===========================
     @NotNull(message = "Champs vide")
     @Size(min = 2,message = "veuillez saisir un quartier correcte")

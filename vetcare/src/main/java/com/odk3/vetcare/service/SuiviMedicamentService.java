@@ -84,12 +84,32 @@ public class SuiviMedicamentService {
 
     ////////////////////////////// Pour la modification des medicament
 
-    public SuiviMedicament modifierMedicament(SuiviMedicament suiviMedicament) {
+    /*public SuiviMedicament modifierMedicament(SuiviMedicament suiviMedicament) {
         if (suiviMedicamentRepository.findBySuiviMedicamentId(suiviMedicament.getSuiviMedicamentId()) != null) {
             suiviMedicamentRepository.save(suiviMedicament);
             return suiviMedicamentRepository.findBySuiviMedicamentId(suiviMedicament.getSuiviMedicamentId());
         }else
             return null;
+    }*/
+
+    public SuiviMedicament modifierMedicamentAvecImage(SuiviMedicament suiviMedicament, MultipartFile imageFile) throws  Exception {
+        SuiviMedicament verifSuiviMedicament = suiviMedicamentRepository.findBySuiviMedicamentId(suiviMedicament.getSuiviMedicamentId());
+        if (verifSuiviMedicament == null) {
+            throw new NotFoundException("Suivi medicament non trouver");
+        }
+        if (imageFile != null) {
+            try {
+                String emplacementImage =  "C:\\xampp\\\\htdocs\\vetCareFileMedi\\images";
+                String nomImage = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+                Path cheminImage = Paths.get(emplacementImage).resolve(nomImage);
+
+                Files.copy(imageFile.getInputStream(), cheminImage, StandardCopyOption.REPLACE_EXISTING);
+                suiviMedicament.setPhoto("http://localhost/vetCareFileMedi/images/" + nomImage);
+            } catch (NotFoundException ex) {
+                throw  new NotFoundException("Une erreur s'est produite lors de la mise à jour de l'annonce avec l'ID : ");
+            }
+        }
+        return  suiviMedicamentRepository.save(suiviMedicament);
     }
 
     ////////////////////////////// Pour la suppression des Utilisateur
