@@ -8,6 +8,7 @@ import com.odk3.vetcare.models.Veterinaire;
 import com.odk3.vetcare.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -130,7 +131,7 @@ public class UtilisateurService {
 
     ////////////////////////////// Pour la suppression des Utilisateur
 
-    public String deleteUtilisateur(Long id) {
+    public String deleteUtilisateur(@PathVariable Long id) {
         if (utilisateurRepository.findByUtilisateurId(id) != null) {
             utilisateurRepository.deleteById(id);
             return "succès";

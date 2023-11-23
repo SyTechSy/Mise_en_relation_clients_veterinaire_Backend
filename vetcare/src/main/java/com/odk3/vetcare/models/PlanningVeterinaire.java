@@ -19,7 +19,7 @@ public class PlanningVeterinaire {
     ////////////////////////// Heur de debut
 
     // Not nul de Spring boot
-    @NotNull(message = " heure")
+    @NotNull(message = " heure de debut")
 
     // Not null de basse de donnée
     @Column(nullable = false)
@@ -28,7 +28,7 @@ public class PlanningVeterinaire {
     ////////////////////////// Heur de debut
 
     // Not nul de Spring boot
-    @NotNull(message = " heure")
+    @NotNull(message = " heure de fin")
 
     // Not null de basse de donnée
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public class PlanningVeterinaire {
 
     ////////////////////////// Ordre priorite
 
-    @NotNull(message = "Champs vide")
+    @NotNull(message = "Champs de priorite vide")
     @Column(nullable = false)
     private int priorite;
 
