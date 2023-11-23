@@ -8,8 +8,15 @@ import com.odk3.vetcare.models.Veterinaire;
 import com.odk3.vetcare.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UtilisateurService {
@@ -18,13 +25,51 @@ public class UtilisateurService {
     UtilisateurRepository utilisateurRepository;
 
     /////////////////////////////// Pour ajouter un Utilisateur
-    public Utilisateur creerUtilisateur(Utilisateur utilisateur) {
+    /*public Utilisateur creerUtilisateur(Utilisateur utilisateur) {
         if (utilisateurRepository.findByEmail(utilisateur.getEmail()) == null) {
             return utilisateurRepository.save(utilisateur);
         } else {
             throw new NoContentException("Cet email existe déjà");
         }
+    }*/
+
+    public Utilisateur creerUtilisateur(Utilisateur utilisateur, MultipartFile imageFile) throws Exception {
+        if (utilisateurRepository.findByEmail(utilisateur.getEmail()) == null) {
+
+            // Traitement du fichier image
+            if (imageFile != null ) {
+                String imageLocation = "C:\\xampp\\\\htdocs\\vetCareFile\\images";
+                try {
+                    Path imageRootLocation = Paths.get(imageLocation);
+                    if (!Files.exists(imageRootLocation)) {
+                        Files.createDirectories(imageRootLocation);
+                    }
+
+                    String imageName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+                    Path imagePath = imageRootLocation.resolve(imageName);
+                    Files.copy(imageFile.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
+                    utilisateur.setPhoto("http://localhost/vetCareFile/images/" + imageName);
+                    //"Erreur lors du traitement du fichier image : " + e.getM);
+                } catch (IOException e) {
+                    throw new Exception("Erreur lors du traitement du fichier image : " + e.getMessage());
+                }
+            }
+
+            return  utilisateurRepository.save(utilisateur);
+        } else {
+            throw new DuplicateException("Email " + utilisateur.getEmail() + "existe déjà");
+        }
     }
+
+
+
+
+
+
+
+
+
+
 
     public Utilisateur userId(Utilisateur utilisateur) {
         if (utilisateurRepository.findByUtilisateurId(utilisateur.getUtilisateurId()) != null) {
@@ -54,13 +99,34 @@ public class UtilisateurService {
 
     ////////////////////////////// Pour la modification des Utilisateur
 
-    public Utilisateur modifierUtilisateur(Utilisateur utilisateur) {
+    public Utilisateur modifierUtilisateur(Utilisateur utilisateur, MultipartFile imageFile) throws Exception {
+        Utilisateur verifUtilisateur = utilisateurRepository.findByUtilisateurId(utilisateur.getUtilisateurId());
+        if (verifUtilisateur == null) {
+            throw new NotFoundException("Utilisateur non trouver");
+        }
+        if (imageFile != null) {
+            try {
+                String emplacementImage = "C:\\xampp\\\\htdocs\\vetCareFile\\images";
+                String nomImage = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+                Path cheminImage = Paths.get(emplacementImage).resolve(nomImage);
+
+                Files.copy(imageFile.getInputStream(), cheminImage, StandardCopyOption.REPLACE_EXISTING);
+                utilisateur.setPhoto("http://localhost/vetCareFile/images/" + nomImage);
+            } catch (NotFoundException ex) {
+                throw new NotFoundException("Une erreur s'est produite lors de la mise à jour de l'annonce avec l'ID : ");
+            }
+        }
+        return utilisateurRepository.save(utilisateur);
+    }
+
+
+    /*public Utilisateur modifierUtilisateur(Utilisateur utilisateur) {
         if (utilisateurRepository.findByUtilisateurId(utilisateur.getUtilisateurId()) != null) {
             return utilisateurRepository.save(utilisateur);
         } else {
             return null;
         }
-    }
+    }*/
 
     ////////////////////////////// Pour la suppression des Utilisateur
 

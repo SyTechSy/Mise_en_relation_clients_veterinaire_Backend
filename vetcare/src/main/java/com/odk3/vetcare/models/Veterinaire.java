@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 public class Veterinaire {
@@ -128,10 +131,18 @@ public class Veterinaire {
 
     //========================= POUR LE IMAGE =============================
 
+/*
+    @NotNull(message = "Champs vide")
+    @Column(nullable = false)
+    private String imageCV;*/
+
+
+    //========================= POUR LE IMAGE =============================
+
 
     @NotNull(message = "Champs vide")
     @Column(nullable = false)
-    private String imageCV;
+    private String imagePRO;
 
 
     //======================= POUR MOT DE PASSE ===============================
@@ -146,4 +157,11 @@ public class Veterinaire {
     // Not Null de base de donnée
     @Column(nullable = false)
     private String motDePasse;
+
+
+
+    ////////////////////// LES RELATIONS ENTRE LES TABLES
+
+    //@OneToMany(mappedBy = "veterinaire", orphanRemoval = true)
+    //private List<PlanningVeterinaire> planningVeterinaireList = new ArrayList<>();
 }

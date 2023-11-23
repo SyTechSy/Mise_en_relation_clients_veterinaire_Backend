@@ -5,8 +5,8 @@ import com.odk3.vetcare.exceptions.NoContentException;
 import com.odk3.vetcare.exceptions.NotFoundException;
 import com.odk3.vetcare.models.Veterinaire;
 import com.odk3.vetcare.repositories.VeterinaireRepository;
-import jakarta.persistence.Id;
-import jdk.javadoc.doclet.StandardDoclet;
+//import jakarta.persistence.Id;
+//import jdk.javadoc.doclet.StandardDoclet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,18 +50,46 @@ public class VeterinaireService {
                     String imageName = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
                     Path imagePath = imageRootLocation.resolve(imageName);
                     Files.copy(imageFile.getInputStream(), imagePath, StandardCopyOption.REPLACE_EXISTING);
-                    veterinaire.setImageCV("http://localhost/vetCareFile/images/" + imageName);
+                    veterinaire.setImagePRO("http://localhost/vetCareFile/images/" + imageName);
                     //"Erreur lors du traitement du fichier image : " + e.getM);
                 } catch (IOException e) {
                     throw new Exception("Erreur lors du traitement du fichier image : " + e.getMessage());
                 }
             }
+            /*if (imageFile2 != null) {
+                String imageProLocation = "C:\\xampp\\\\htdocs\\vetCareFile\\images";
+                try {
+                    Path imageRootLocation2 = Paths.get(imageProLocation);
+                    if (!Files.exists(imageRootLocation2)) {
+                        Files.createDirectories(imageRootLocation2);
+                    }
+                    String imageNamePro = UUID.randomUUID().toString() + "_" + imageFile.getOriginalFilename();
+                    Path imagePath2 = imageRootLocation2.resolve(imageNamePro);
+                    Files.copy(imageFile2.getInputStream(), imagePath2, StandardCopyOption.REPLACE_EXISTING);
+                    veterinaire.setImagePRO("http://localhost/vetCareFile/images/" + imageNamePro);
+                } catch (IOException e) {
+                    throw new Exception("Erreur lors du traitement du fichier image : " + e.getMessage());
+                }
+            }*/
 
             return veterinaireRepository.save(veterinaire);
         } else {
             throw new DuplicateException("Email " + veterinaire.getEmail() + "existe déjà");
         }
     }
+
+
+    ////////////////////////////////////////////////////
+
+    public Veterinaire suiviVeterinaireById(Long idSuiviVete) {
+        if (veterinaireRepository.findByVeteriniareId(idSuiviVete) != null)
+            return veterinaireRepository.findByVeteriniareId(idSuiviVete);
+        else
+            throw new NoContentException("Suivi veterinaire invalid");
+    }
+
+
+
 
     /////////////////////////////// Pour voir les list des vétérinaire
 
@@ -94,11 +122,25 @@ public class VeterinaireService {
                 Path cheminImage = Paths.get(emplacementImage).resolve(nomImage);
 
                 Files.copy(imageFile.getInputStream(), cheminImage, StandardCopyOption.REPLACE_EXISTING);
-                veterinaire.setImageCV("http://localhost/vetCareFile/images/" + nomImage);
+                veterinaire.setImagePRO("http://localhost/vetCareFile/images/" + nomImage);
             } catch (NotFoundException ex) {
                 throw new NotFoundException("Une erreur s'est produite lors de la mise à jour de l'annonce avec l'ID : ");
             }
         }
+       /* if (imageFile2 != null) {
+            try {
+                String emplacementImagePro = "C:\\xampp\\\\htdocs\\vetCareFile\\images";
+                String nomImagePro = UUID.randomUUID().toString() + "_" + imageFile2.getOriginalFilename();
+                Path cheminImagePro = Paths.get(emplacementImagePro).resolve(nomImagePro);
+
+                Files.copy(imageFile2.getInputStream(), cheminImagePro, StandardCopyOption.REPLACE_EXISTING);
+                veterinaire.setImagePRO("http://localhost/vetCareFile/images/" + nomImagePro);
+            } catch (NotFoundException ex) {
+                throw new NotFoundException("Une erreur s'est produite lors de la mise à jour de l'annonce avec l'ID : ");
+            }
+        }*/
+
+
         return veterinaireRepository.save(veterinaire);
     }
 

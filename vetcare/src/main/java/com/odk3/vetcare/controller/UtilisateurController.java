@@ -1,5 +1,8 @@
 package com.odk3.vetcare.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.odk3.vetcare.models.Utilisateur;
 import com.odk3.vetcare.models.Veterinaire;
 import com.odk3.vetcare.service.UtilisateurService;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,7 +40,42 @@ public class UtilisateurController {
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
     @PostMapping("/ajouter")
-    public ResponseEntity<Object> ajouterUtilista(@Valid @RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<Object> ajouterUtilisateur(
+            @Valid @RequestParam("utilisateur") String utilisateurString,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+        ) throws Exception {
+        Utilisateur utilisateur;
+        try {
+            //JsonMapper jsonMapper = new JsonMapper();
+            //jsonMapper.registerModule(new JavaTimeModule());
+            //utilisateur = jsonMapper.readValue(utilisateurString, Utilisateur.class);
+            utilisateur = new JsonMapper().readValue(utilisateurString, Utilisateur.class);
+        } catch (JsonProcessingException e) {
+            throw new Exception(e.getMessage());
+        }
+
+        Utilisateur savedUtilisateur = utilisateurService.creerUtilisateur(utilisateur, imageFile);
+        return new ResponseEntity<>(savedUtilisateur, HttpStatus.CREATED);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public ResponseEntity<Object> ajouterUtilista(@Valid @RequestBody Utilisateur utilisateur) {
 
         Utilisateur verifUtilisateur = utilisateurService.creerUtilisateur(utilisateur);
         if (verifUtilisateur != null) {
@@ -44,7 +83,7 @@ public class UtilisateurController {
         } else {
             return new ResponseEntity<>("existe pas", HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
 
     @GetMapping("UtilisateurId")
@@ -108,15 +147,34 @@ public class UtilisateurController {
             @ApiResponse(responseCode = "404", description = "introuvable", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
-    @PutMapping("/modifier")
-    public ResponseEntity<Object> modifierUtilisateur(@Valid @RequestBody Utilisateur utilisateur) {
+    @PutMapping(value = "/modifier", consumes = {"*/*"})
+    public ResponseEntity<Object> modifierUtilisateur(
+            @Valid @RequestParam("utilisateur") String utilisateurString,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) {
+        try {
+            Utilisateur utilisateurMiseAJour = new JsonMapper().readValue(utilisateurString, Utilisateur.class);
+
+            Utilisateur utilisateurMiseAJourner = utilisateurService.modifierUtilisateur(utilisateurMiseAJour, imageFile);
+
+            return new ResponseEntity<>(utilisateurMiseAJourner, HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+    /*public ResponseEntity<Object> modifierUtilisateur(@Valid @RequestBody Utilisateur utilisateur) {
         Utilisateur verifUtilisateur = utilisateurService.modifierUtilisateur(utilisateur);
         if (verifUtilisateur != null) {
             return new ResponseEntity<>(verifUtilisateur, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("on peut pas modifier quelque chose qui n'existe pas", HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
     /////////////////////////////// Pour la suppression d'un utilisateur
     @Operation(summary = "Supprimer un Utilisateur ")

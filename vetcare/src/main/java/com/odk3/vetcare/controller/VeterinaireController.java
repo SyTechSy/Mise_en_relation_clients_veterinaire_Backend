@@ -41,7 +41,10 @@ public class VeterinaireController {
     @PostMapping("/ajouter")
     public ResponseEntity<Object> ajouterVeterinaire(
             @Valid @RequestParam("veterinaire") String veterinaireString,
-            @RequestParam(value = "image", required = false) MultipartFile imageFile)
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+            //@RequestParam(value = "image2", required = false) MultipartFile imageFile2
+        )
+
             throws Exception {
 
         Veterinaire veterinaires ;
@@ -54,6 +57,18 @@ public class VeterinaireController {
         Veterinaire savedVeterinaire = veterinaireService.creerVeterinaire(veterinaires, imageFile);
         return new ResponseEntity<>(savedVeterinaire, HttpStatus.CREATED);
     }
+
+    ///////////////////// suiviVete
+    @GetMapping("/suiviVete/{id}")
+    public ResponseEntity<Object> voirVeterinaireParId(@PathVariable long id) {
+        return new ResponseEntity<>(veterinaireService.suiviVeterinaireById(id), HttpStatus.OK);
+    }
+
+
+
+
+
+
 
     ////////////////////////////// Pour La connexion des Vétérinaire
 
@@ -103,11 +118,13 @@ public class VeterinaireController {
     @PutMapping("/modifier")
     public  ResponseEntity<Veterinaire> modifierVeterinaire(
             @Valid @RequestParam("veterinaire") String veterinaireString,
-            @RequestParam(value = "image", required = false) MultipartFile imageFile) {
-        Veterinaire veterinaireMiseAJour ;
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+            //@RequestParam(value = "image2", required = false) MultipartFile imageFile2
+        ) throws Exception {
+        Veterinaire veterinaireMiseAJour;
         try {
             veterinaireMiseAJour = new  JsonMapper().readValue(veterinaireString, Veterinaire.class);
-        }catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
