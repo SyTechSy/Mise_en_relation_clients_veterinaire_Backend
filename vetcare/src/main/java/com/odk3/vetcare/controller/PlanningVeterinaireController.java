@@ -1,5 +1,7 @@
 package com.odk3.vetcare.controller;
 
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.odk3.vetcare.models.PlanningVeterinaire;
 import com.odk3.vetcare.service.PlanningVeterinaireService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8100")
 @RestController
 @RequestMapping("api/planning")
 public class PlanningVeterinaireController {
@@ -42,6 +45,14 @@ public class PlanningVeterinaireController {
             return new ResponseEntity<>(verifPlanningVeterinaire, HttpStatus.OK);
         } else
             return new ResponseEntity<>("Cet plannin n'existe déjà", HttpStatus.NOT_FOUND);
+    }
+
+
+    ////////// CONTROLLER DE MODIFICATION PAR ID
+
+    @GetMapping("/planning/{id}")
+    public ResponseEntity<Object> modifierPlanningParId(@PathVariable long id) {
+        return new ResponseEntity<>(planningVeterinaireService.planningVeterinaireById(id), HttpStatus.OK);
     }
 
 
@@ -73,13 +84,13 @@ public class PlanningVeterinaireController {
             @ApiResponse(responseCode = "404", description = "Planning vétérinaire introuvable", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
-    @PutMapping("/modifier")
+    @PutMapping(value = "/modifier", consumes = {"*/*"})
     public ResponseEntity<Object> modifierPlanningVete(@RequestBody PlanningVeterinaire planningVeterinaire) {
         PlanningVeterinaire verifPlanningVeterinaire = planningVeterinaireService.modifierPlannigVete(planningVeterinaire);
         if (verifPlanningVeterinaire != null) {
             return new ResponseEntity<>(verifPlanningVeterinaire, HttpStatus.OK);
         } else
-            return new ResponseEntity<>("Planning n'existe pas donc on peur pas modifier", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Planning n'existe pas donc on peut pas modifier", HttpStatus.NOT_FOUND);
     }
 
     ////////// POUR LA SUPPRESSION DES PLANNING
@@ -95,8 +106,8 @@ public class PlanningVeterinaireController {
     @DeleteMapping("/supprimer/{id}")
     public ResponseEntity<String> suppressionPlanningVete(@PathVariable Long id) {
         String message = planningVeterinaireService.supprimerPlanning(id);
-        if (message.equals("Succès")) {
-            return new ResponseEntity<>("Suppression avec succès", HttpStatus.OK);
+        if (message.equals("succès")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
         } else
             return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
     }

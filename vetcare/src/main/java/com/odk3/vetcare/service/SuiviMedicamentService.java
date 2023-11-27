@@ -64,7 +64,7 @@ public class SuiviMedicamentService {
 
 
 
-    ///////////////////////
+    /////////////////////// SERVISE DE MODICAMENTION PAR ID
 
     public SuiviMedicament suiviMedicamentById(long idSuivi) {
         if (suiviMedicamentRepository.findBySuiviMedicamentId(idSuivi) != null)
@@ -79,7 +79,7 @@ public class SuiviMedicamentService {
         if (!suiviMedicamentRepository.findAll().isEmpty())
             return suiviMedicamentRepository.findAll();
         else
-            throw new NoContentException("Aucun Utulisateur n'a été trouver");
+            throw new NoContentException("Aucun Medicament n'a été trouver");
     }
 
     ////////////////////////////// Pour la modification des medicament

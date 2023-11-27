@@ -85,7 +85,7 @@ public class UtilisateurService {
         if (utilisateurRepository.findByEmailAndMotDePasse(email, mot_de_passe) != null) {
             return utilisateurRepository.findByEmailAndMotDePasse(email, mot_de_passe);
         } else
-            throw new NotFoundException("Utilisateur n'existe pas veille céer un compte merci !");
+            throw new NotFoundException("Utilisateur n'existe pas veille créer un compte merci !");
     }
 
 

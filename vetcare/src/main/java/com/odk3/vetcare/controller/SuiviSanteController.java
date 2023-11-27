@@ -1,13 +1,12 @@
 package com.odk3.vetcare.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.odk3.vetcare.models.SuiviMedicament;
+import com.odk3.vetcare.models.SuiviSante;
 import com.odk3.vetcare.models.Utilisateur;
 import com.odk3.vetcare.models.Veterinaire;
-import com.odk3.vetcare.service.SuiviMedicamentService;
+import com.odk3.vetcare.service.SuiviSanteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,17 +22,17 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8100")
+@RequestMapping("/api/suiviSante")
 @RestController
-@RequestMapping("api/suiviMedicament")
-public class SuiviMedicamentController {
+public class SuiviSanteController {
 
     @Autowired
-    SuiviMedicamentService suiviMedicamentService;
+    SuiviSanteService suiviSanteService;
 
     ///////////////////////////// Pour ajouter un Vétériniare
-    @Operation(summary = "Ajouter un Medicament ")
+    @Operation(summary = "Ajouter un Animal ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Medicament ajouter", content = {
+            @ApiResponse(responseCode = "200", description = "Animal ajouter", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Utilisateur.class))
             }),
             @ApiResponse(responseCode = "400", description = "Mauvaise requete", content = @Content),
@@ -41,118 +40,105 @@ public class SuiviMedicamentController {
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
     @RequestMapping("/ajouter")
-    public ResponseEntity<Object> ajouterMedicamentMedi(
-            @Valid @RequestParam("suiviMedicament") String suiviMedicamentString,
-            @RequestParam(value = "image", required = false)MultipartFile imageFile
-            ) throws  Exception {
+    public ResponseEntity<Object> ajouterSuiviSante(
+            @Valid @RequestParam("suiviSante") String suiviSanteString,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) throws  Exception {
 
-        SuiviMedicament suiviMedicament;
+        SuiviSante suiviSante;
         try {
             JsonMapper jsonMapper = new JsonMapper();
             jsonMapper.registerModule(new JavaTimeModule());
-            suiviMedicament = jsonMapper.readValue(suiviMedicamentString, SuiviMedicament.class);
+            suiviSante = jsonMapper.readValue(suiviSanteString, SuiviSante.class);
         } catch (JsonProcessingException e) {
             throw new Exception(e.getMessage());
         }
 
-        SuiviMedicament savedSuiviMedicament = suiviMedicamentService.ajouterMedicamentAvecImage(suiviMedicament, imageFile);
-        return new ResponseEntity<>(savedSuiviMedicament, HttpStatus.CREATED);
+        SuiviSante savedSuiviSante = suiviSanteService.ajouterAnimalAvecImage(suiviSante, imageFile);
+        return new ResponseEntity<>(savedSuiviSante, HttpStatus.CREATED);
     }
 
 
 
     ////////////////////////////// Pour voir les des Vétérinaire
 
-    @Operation(summary = "Renvoie la liste des Medicament")
+    @Operation(summary = "Renvoie la liste des Animals")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "List medicament renvoyer",content = {
+            @ApiResponse(responseCode = "200",description = "List des animal renvoyer",content = {
                     @Content(mediaType = "application/json",schema = @Schema(implementation = Veterinaire.class))
             }),
             @ApiResponse(responseCode = "400",description = "Mauvaise requete", content = @Content),
-            @ApiResponse(responseCode = "204",description = "List des Medicament est vide", content = @Content),
+            @ApiResponse(responseCode = "204",description = "List des Animal est vide", content = @Content),
             @ApiResponse(responseCode = "500",description = "Erreur server", content = @Content)
     })
     @GetMapping("/list")
-    public List<SuiviMedicament> allMedicament() {
-        return suiviMedicamentService.listUtilisateu();
+    public List<SuiviSante> allSante() {
+        return suiviSanteService.listAnimal();
     }
 
 
 
     ////////////////////////////// Pour le modification de utilisateur
 
-    @Operation(summary = "Modifier un Medicament ")
+    @Operation(summary = "Modifier un Animal ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Medicament modifier", content = {
+            @ApiResponse(responseCode = "200", description = "Animal modifier", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Utilisateur.class))
             }),
             @ApiResponse(responseCode = "400", description = "Mauvaise requete", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Medicament introuvable", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Animal introuvable", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
 
-    @PutMapping(value = "/modifier", consumes = {"*/*"})
-    public ResponseEntity<SuiviMedicament> modifierMedicamentAvecImage(
-            @Valid @RequestParam("suiviMedicament") String suiviMedicamentString,
+    @PutMapping("/modifier")
+    public ResponseEntity<SuiviSante> modifierSanteAvecImage(
+            @Valid @RequestParam("suiviSante") String suiviSanteString,
             @RequestParam(value = "image", required = false) MultipartFile imageFile
     ) throws Exception {
-        SuiviMedicament suiviMedicamentMiseAJour;
+        SuiviSante suiviSanteMiseAJour;
         try {
             JsonMapper jsonMapper = new JsonMapper();
             jsonMapper.registerModule(new JavaTimeModule());
-            suiviMedicamentMiseAJour = jsonMapper.readValue(suiviMedicamentString, SuiviMedicament.class);
-            //suiviMedicamentMiseAJour = new JsonMapper().readValue(suiviMedicamentString, SuiviMedicament.class);
+            suiviSanteMiseAJour = jsonMapper.readValue(suiviSanteString, SuiviSante.class);
         } catch (JsonProcessingException e) {
             throw new Exception(e.getMessage());
         }
         try {
-            SuiviMedicament suiviMedicamentMiseAJourner = suiviMedicamentService.modifierMedicamentAvecImage(suiviMedicamentMiseAJour, imageFile);
-            return new ResponseEntity<>(suiviMedicamentMiseAJourner, HttpStatus.OK);
+            SuiviSante suiviSanteMiseAJourner = suiviSanteService.modifierAnimalAvecImage(suiviSanteMiseAJour, imageFile);
+            return new ResponseEntity<>(suiviSanteMiseAJourner, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
-
     ////////////////////////// SUIvi id
 
     @GetMapping("/suivi/{id}")
     public ResponseEntity<Object> modifierParId(@PathVariable long id) {
-        return new ResponseEntity<>(suiviMedicamentService.suiviMedicamentById(id), HttpStatus.OK);
+        return new ResponseEntity<>(suiviSanteService.suiviSanteById(id), HttpStatus.OK);
     }
 
 
-
     /////////////////////////////// Pour la suppression d'un utilisateur
-    @Operation(summary = "Supprimer un Medicament ")
+    @Operation(summary = "Supprimer un Animal ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Medicament supprimer", content = {
+            @ApiResponse(responseCode = "200", description = "Animal supprimer", content = {
                     @Content(mediaType = "text/plain", schema = @Schema(implementation = Utilisateur.class))
             }),
             @ApiResponse(responseCode = "400", description = "Mauvaise requete", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Medicament existe pas", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Animal existe pas", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
     @DeleteMapping("/supprimer/{id}")
-    public ResponseEntity<String> deleteMedicament(@PathVariable Long id) {
-        String messageDelete = suiviMedicamentService.deleteMedicament(id);
+    public ResponseEntity<String> deleteAnimal(@PathVariable Long id) {
+        String messageDelete = suiviSanteService.deleteAnimal(id);
         if (messageDelete.equals("succès")) {
             return new ResponseEntity<>(messageDelete, HttpStatus.OK);
         } else
             return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
     }
 
+
+
+
 }
-
-
-
-    /*@PutMapping("/modifier")
-    public ResponseEntity<Object> modifierMedicament(@RequestBody SuiviMedicament suiviMedicament) {
-        SuiviMedicament verifMedicament = suiviMedicamentService.modifierMedicament(suiviMedicament);
-        if (verifMedicament != null) {
-            return new ResponseEntity<>(verifMedicament, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("existe pas", HttpStatus.NOT_FOUND);
-        }
-    }*/
