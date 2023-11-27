@@ -59,7 +59,7 @@ public class AjouterNomService {
     }
 
 
-    public String supprimerAnouterNom(@PathVariable Long id) {
+    public String supprimerAjouterNom(@PathVariable Long id) {
         if (ajouterNomRepository.findByNomId(id) != null) {
             ajouterNomRepository.deleteById(id);
             return "succès";
