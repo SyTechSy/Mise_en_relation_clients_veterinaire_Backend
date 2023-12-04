@@ -3,6 +3,7 @@ package com.odk3.vetcare.service;
 import com.odk3.vetcare.exceptions.DuplicateException;
 import com.odk3.vetcare.exceptions.NoContentException;
 import com.odk3.vetcare.exceptions.NotFoundException;
+import com.odk3.vetcare.models.SanteAnimal;
 import com.odk3.vetcare.models.Utilisateur;
 import com.odk3.vetcare.models.Veterinaire;
 import com.odk3.vetcare.repositories.UtilisateurRepository;
@@ -64,6 +65,15 @@ public class UtilisateurService {
 
 
 
+
+    /////////////////////// SERVISE DE MODICAMENTION PAR ID
+
+    public Utilisateur utilisateurById(long idUser) {
+        if (utilisateurRepository.findByUtilisateurId(idUser) != null)
+            return utilisateurRepository.findByUtilisateurId(idUser);
+        else
+            throw new NoContentException("user invalid");
+    }
 
 
 
@@ -138,4 +148,11 @@ public class UtilisateurService {
         } else
             throw new NotFoundException("Utilisateur non trouver");
     }
+
+
+    public long countUtilisateurs() {
+        return utilisateurRepository.count();
+    }
+
+
 }

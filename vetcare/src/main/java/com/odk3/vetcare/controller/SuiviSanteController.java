@@ -39,7 +39,7 @@ public class SuiviSanteController {
             @ApiResponse(responseCode = "409", description = "Cette medicament existe déjà existe déjà", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
-    @RequestMapping("/ajouter")
+    @PostMapping ("/ajouter")
     public ResponseEntity<Object> ajouterSuiviSante(
             @Valid @RequestParam("suiviSante") String suiviSanteString,
             @RequestParam(value = "image", required = false) MultipartFile imageFile

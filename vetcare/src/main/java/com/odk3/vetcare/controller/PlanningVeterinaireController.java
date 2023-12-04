@@ -35,7 +35,7 @@ public class PlanningVeterinaireController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = PlanningVeterinaire.class))
             }),
             @ApiResponse(responseCode = "400", description = "Mauvaise requete", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Planninh existe déjà", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Planning existe déjà", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
     @PostMapping("/ajouter")

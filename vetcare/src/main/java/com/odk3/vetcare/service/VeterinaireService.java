@@ -89,6 +89,13 @@ public class VeterinaireService {
     }
 
 
+    // ::::::::::::::::::::::::::::: COUNT
+
+    public long countVeterinaire() {
+        return veterinaireRepository.count();
+    }
+
+
 
 
     /////////////////////////////// Pour voir les list des vétérinaire

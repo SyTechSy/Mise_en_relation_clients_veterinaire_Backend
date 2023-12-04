@@ -66,6 +66,10 @@ public class VeterinaireController {
 
 
 
+    @GetMapping("/count")
+    public long countUtilisateurs() {
+        return veterinaireService.countVeterinaire();
+    }
 
 
 

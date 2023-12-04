@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:8100")
 @RestController
 @RequestMapping("/api/santeAnimal")
 public class SanteAnimalController {
@@ -36,7 +37,7 @@ public class SanteAnimalController {
             @ApiResponse(responseCode = "409", description = "Cette Sante animal existe déjà existe déjà", content = @Content),
             @ApiResponse(responseCode = "500", description = "Erreur server", content = @Content)
     })
-    @RequestMapping("/ajouter")
+    @PostMapping("/ajouter")
     public ResponseEntity<Object> ajouterSanterAnimal(
             @Valid @RequestParam("santeAnimal") String santeAnimalString,
             @RequestParam(value = "image", required = false) MultipartFile imageFile

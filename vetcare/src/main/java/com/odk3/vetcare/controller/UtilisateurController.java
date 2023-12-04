@@ -27,6 +27,7 @@ import java.util.List;
 public class UtilisateurController {
 
     @Autowired
+    //UtilisateurService utilisateurService;
     UtilisateurService utilisateurService;
 
     ///////////////////////////// Pour ajouter un Vétériniare
@@ -63,8 +64,16 @@ public class UtilisateurController {
 
 
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Object> modifierParId(@PathVariable long id) {
+        return new ResponseEntity<>(utilisateurService.utilisateurById(id), HttpStatus.OK);
+    }
 
 
+    @GetMapping("/count")
+    public long countUtilisateurs() {
+        return utilisateurService.countUtilisateurs();
+    }
 
 
 

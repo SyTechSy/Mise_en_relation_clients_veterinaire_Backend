@@ -33,12 +33,22 @@ public class SanteAnimal {
     private String race;
 
     //=========================== sexe de animal ===========================
-
+/*
     // Not nul de Spring boot
     @NotNull(message = "sexe de l'animal")
     // Not null de basse de donnée
     @Column(nullable = false)
     private String sexe;
+
+
+ */
+
+    ////////////////////////// Ordre priorite sexe
+
+    @NotNull(message = "Champs de priorite vide")
+    @Column(nullable = false)
+    private String prioriteSexe;
+
 
     //=========================== age de animal ===========================
 
